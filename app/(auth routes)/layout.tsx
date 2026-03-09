@@ -26,16 +26,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
-        <TanStackProvider>
-          <Header />
-          <main>
-            {children}
-          </main>
-          <Footer />
-        </TanStackProvider>
-      </body>
-    </html>
+    <>
+      <Header />
+      <main>
+        {children}
+      </main>
+      <Footer />
+    </>
   );
 }

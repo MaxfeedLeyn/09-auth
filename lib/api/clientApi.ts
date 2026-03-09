@@ -1,4 +1,4 @@
-import { nextServer } from "@/app/api/api";
+import { nextServer } from "@/lib/api/api";
 import { User } from "@/types/user";
 
 export type RegisterRequest = {
@@ -7,11 +7,11 @@ export type RegisterRequest = {
 };
     
 export const register = async (data: RegisterRequest) => { 
-    const response = await nextServer.post<User>("/api/auth/register", data);
+    const response = await nextServer.post<User>("auth/register", data);
     return response.data;
 }
 
 export const getMe = async () => {
-  const { data } = await nextServer.get<User>('/auth/me');
+  const { data } = await nextServer.get<User>('users/me');
   return data;
 };
