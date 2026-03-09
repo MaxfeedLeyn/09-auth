@@ -1,9 +1,8 @@
-import css from "./profile.module.css";
+import css from "./ProfilePage.module.css";
 import { Metadata } from "next";
 import Link from "next/link";
 import { getMe } from "@/lib/api/serverApi";
 import Image from 'next/image';
-import { User } from "@/types/user";
 
 export const metadata: Metadata = {
     title: "NoteHub: Profile page",
