@@ -1,4 +1,5 @@
 import css from "./EditProfilePage.module.css";
+import Image from "next/image";
 
 function ProfileEditPage() {
   return (
