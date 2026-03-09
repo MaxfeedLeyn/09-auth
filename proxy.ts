@@ -38,7 +38,21 @@ export async function proxy(request: NextRequest) {
     if (!accessToken) {
       if (refreshToken) {
         // тут silent refresh
-        
+        const res = await fetch(new URL('/api/auth/session', request.url), {
+          headers: {
+            cookie: request.headers.get('cookie') || '',
+          },
+        });
+        if (res.ok) {
+          const response = NextResponse.next();
+          const setCookieHeader = res.headers.get('set-cookie');
+          if (setCookieHeader) {
+            response.headers.set('set-cookie', setCookieHeader);
+          }
+          return response;
+        } else {
+          return NextResponse.redirect(new URL('/sign-in', request.url));
+        }
       } else {
         return NextResponse.redirect(new URL("/sign-in", request.url));
       }
