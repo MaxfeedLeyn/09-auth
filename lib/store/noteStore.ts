@@ -11,8 +11,6 @@ type PostNoteDraftStore = {
   clearDraft: () => void;
 };
 
-
-
 const initialDraft: PostNote = {
   title: '',
   content: '',

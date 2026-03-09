@@ -2,7 +2,7 @@
 import css from "./NoteForm.module.css";
 import type { PostNote } from "../../types/note";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { createNote } from "../../lib/api";
+import { createNote } from "../../lib/api/api";
 import { useNoteDraftStore } from "@/lib/store/noteStore";
 
 // const CreateNoteSchema = Yup.object().shape({
