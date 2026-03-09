@@ -8,6 +8,7 @@ export type RegisterRequest = {
   email: string;
   password: string;
 };
+
     
 export const register = async (data: RegisterRequest): Promise<User> => { 
     const response = await nextServer.post<User>("/auth/register", data);
