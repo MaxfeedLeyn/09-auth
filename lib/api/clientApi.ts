@@ -64,3 +64,21 @@ export async function fetchNoteById(id: string): Promise<Note> {
   );
   return response.data;
 }
+
+export async function updateMe(email: string, password: string): Promise<User> {
+  const response = await nextServer.patch<User>(
+    '/users/me', { email, password },
+  );
+  return response.data;
+}
+
+export async function login(email: string, password: string): Promise<User> {
+  const response = await nextServer.post<User>(
+    '/auth/login', { email, password },
+  );
+  return response.data;
+}
+
+export async function logout() {
+  await nextServer.post('/auth/logout');
+}

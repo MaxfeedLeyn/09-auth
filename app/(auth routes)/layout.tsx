@@ -1,7 +1,4 @@
-'use client'
-import type { Metadata } from "next";
-import Header from "@/components/Header/Header";
-import Footer from '@/components/Footer/Footer';
+'use client';
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 

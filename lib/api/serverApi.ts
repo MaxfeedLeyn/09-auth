@@ -1,24 +1,43 @@
-// import axios from 'axios';
 import { nextServer } from "@/lib/api/api";
-import { User } from "@/types/user";
-import type { Note } from '@/types/note'
-import type { PostNote } from '@/types/note'
+import { cookies } from "next/headers";
 
-const TOKEN = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
+import { User } from "@/types/user";
+import type { Note, PostNote } from "@/types/note";
 
 export type CheckSessionRequest = {
   success: boolean;
 };
 
+function getCookieHeader() {
+  const cookieStore = cookies();
+  return cookieStore.toString();
+}
+
 export const checkSession = async () => {
-  const res = await nextServer.get<CheckSessionRequest>('/auth/session');
-  return res.data.success;
+  const res = await nextServer.get<CheckSessionRequest>(
+    "/auth/session",
+    {
+      headers: {
+        Cookie: getCookieHeader(),
+      },
+    }
+  );
+
+  return res;
 };
 
-export const getMe = async ( ): Promise<User> => {
-  const { data } = await nextServer.get<User>('/users/me');
+export const getMe = async (): Promise<User> => {
+  const { data } = await nextServer.get<User>(
+    "/users/me",
+    {
+      headers: {
+        Cookie: getCookieHeader(),
+      },
+    }
+  );
+
   return data;
-}
+};
 
 interface HTTPResponse {
   notes: Note[];
@@ -27,10 +46,10 @@ interface HTTPResponse {
 
 export async function fetchNotes(query: string, page: number, tag?: string) {
   const response = await nextServer.get<HTTPResponse>(
-    '/notes',
+    "/notes",
     {
       headers: {
-        Authorization: `Bearer ${TOKEN}`,
+        Cookie: getCookieHeader(),
       },
       params: {
         search: query,
@@ -40,18 +59,21 @@ export async function fetchNotes(query: string, page: number, tag?: string) {
       },
     }
   );
+
   return response.data;
 }
 
 export async function createNote(note: PostNote): Promise<Note> {
   const response = await nextServer.post<Note>(
-    '/notes', note, 
+    "/notes",
+    note,
     {
       headers: {
-        Authorization: `Bearer ${TOKEN}`,
+        Cookie: getCookieHeader(),
       },
     }
   );
+
   return response.data;
 }
 
@@ -60,21 +82,23 @@ export async function deleteNote(id: string): Promise<Note> {
     `/notes/${id}`,
     {
       headers: {
-        Authorization: `Bearer ${TOKEN}`,
+        Cookie: getCookieHeader(),
       },
     }
   );
+
   return response.data;
 }
 
 export async function fetchNoteById(id: string): Promise<Note> {
   const response = await nextServer.get<Note>(
-    `https://notehub-public.goit.study/api/notes/${id}`,
+    `/notes/${id}`,
     {
       headers: {
-        Authorization: `Bearer ${TOKEN}`,
+        Cookie: getCookieHeader(),
       },
     }
   );
+
   return response.data;
 }
