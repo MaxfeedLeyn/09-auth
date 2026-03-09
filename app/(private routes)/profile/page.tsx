@@ -1,27 +1,27 @@
-// import css from "./ProfilePage.module.css";
-// import { Metadata } from "next";
-// import Link from "next/link";
-// import { getMe } from "@/lib/api/serverApi";
-// import Image from 'next/image';
+import css from "./ProfilePage.module.css";
+import { Metadata } from "next";
+import Link from "next/link";
+import { getMe } from "@/lib/api/serverApi";
+import Image from 'next/image';
 
-// export const metadata: Metadata = {
-//     title: "NoteHub: Profile page",
-//     description: "NoteHub user profile page",
-//     openGraph: {
-//       title: "NoteHub: Profile page",
-//       description: "NoteHub user profile page",
-//       url: "https://notehub.com/profile",
-//       images: [{
-//         url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
-//         width: 1536,
-//         height: 1024,
-//         alt: "NoteHub logo"
-//       },
-//     ],
-//     }
-// };
+export const metadata: Metadata = {
+    title: "NoteHub: Profile page",
+    description: "NoteHub user profile page",
+    openGraph: {
+      title: "NoteHub: Profile page",
+      description: "NoteHub user profile page",
+      url: "https://notehub.com/profile",
+      images: [{
+        url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
+        width: 1536,
+        height: 1024,
+        alt: "NoteHub logo"
+      },
+    ],
+    }
+};
 
-// export default async function ProfilePage() {
+export default async function ProfilePage() {
 //   const user = await getMe();
 //   return (
 //     <main className={css.mainContent}>
@@ -48,4 +48,4 @@
 //       </div>
 //     </main>
 //   );
-// }
+}
