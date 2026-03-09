@@ -28,34 +28,42 @@ export async function proxy(request: NextRequest) {
     pathname.startsWith(route)
   );
 
-  // Якщо користувач авторизований і йде на auth сторінки
   if (isAuthRoute && accessToken) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  // Якщо приватний маршрут
   if (isPrivateRoute) {
     if (!accessToken) {
       if (refreshToken) {
-        // тут silent refresh
-        const res = await fetch(new URL('/api/auth/session', request.url), {
+        const res = await fetch(new URL("/api/auth/session", request.url), {
           headers: {
-            cookie: request.headers.get('cookie') || '',
+            cookie: request.headers.get("cookie") || "",
           },
         });
+
         if (res.ok) {
           const response = NextResponse.next();
-          const setCookieHeader = res.headers.get('set-cookie');
+
+          const setCookieHeader = res.headers.get("set-cookie");
+
           if (setCookieHeader) {
-            response.headers.set('set-cookie', setCookieHeader);
+            const cookiesArray = setCookieHeader.split(",");
+
+            cookiesArray.forEach((cookieString) => {
+              const [cookie] = cookieString.split(";");
+              const [name, value] = cookie.split("=");
+
+              response.cookies.set(name.trim(), value.trim());
+            });
           }
+
           return response;
         } else {
-          return NextResponse.redirect(new URL('/sign-in', request.url));
+          return NextResponse.redirect(new URL("/sign-in", request.url));
         }
-      } else {
-        return NextResponse.redirect(new URL("/sign-in", request.url));
       }
+
+      return NextResponse.redirect(new URL("/sign-in", request.url));
     }
   }
 
