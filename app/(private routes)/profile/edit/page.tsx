@@ -11,34 +11,40 @@ import { ApiError } from "@/app/api/api";
 function ProfileEditPage() {
   const router = useRouter();
   const { user, setUser } = useAuthStore();
-  const [formData, setFormData] = useState({ username: '', email: '', avatar: '' });
-  const [error, setError] = useState('');
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+  });
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (user) {
       setFormData({
-        username: user.username || '',
-        email: user.email || '',
-        avatar: user.avatar || '',
+        username: user.username || "",
+        email: user.email || "",
       });
     }
   }, [user]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const updatedUser = await updateMe(formData.email, "");
+      const updatedUser = await updateMe({
+        username: formData.username,
+      });
       setUser(updatedUser);
-      router.push('/profile');
+      router.push("/profile");
     } catch (err) {
-      setError((err as ApiError).response?.data?.error ??
+      setError(
+        (err as ApiError).response?.data?.error ??
           (err as ApiError).message ??
-        'Oops... some error');
+          "Oops... some error",
+      );
     }
   };
 
@@ -52,7 +58,7 @@ function ProfileEditPage() {
         <h1 className={css.formTitle}>Edit Profile</h1>
 
         <Image
-          src={formData.avatar || 'avatar'}
+          src={user?.avatar || "avatar"}
           alt="User Avatar"
           width={120}
           height={120}
@@ -79,7 +85,7 @@ function ProfileEditPage() {
               type="email"
               name="email"
               value={formData.email}
-              onChange={handleChange}
+              readOnly
               className={css.input}
             />
           </div>
@@ -88,7 +94,11 @@ function ProfileEditPage() {
             <button type="submit" className={css.saveButton}>
               Save
             </button>
-            <button type="button" className={css.cancelButton} onClick={handleCancel}>
+            <button
+              type="button"
+              className={css.cancelButton}
+              onClick={handleCancel}
+            >
               Cancel
             </button>
           </div>

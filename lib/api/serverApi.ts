@@ -8,7 +8,7 @@ export type CheckSessionRequest = {
   success: boolean;
 };
 
-function getCookieHeader() {
+async function getCookieHeader() {
   const cookieStore = cookies();
   return cookieStore.toString();
 }
@@ -18,7 +18,7 @@ export const checkSession = async () => {
     "/auth/session",
     {
       headers: {
-        Cookie: getCookieHeader(),
+        Cookie: await getCookieHeader(),
       },
     }
   );
@@ -31,7 +31,7 @@ export const getMe = async (): Promise<User> => {
     "/users/me",
     {
       headers: {
-        Cookie: getCookieHeader(),
+        Cookie: await getCookieHeader(),
       },
     }
   );
@@ -49,7 +49,7 @@ export async function fetchNotes(query: string, page: number, tag?: string) {
     "/notes",
     {
       headers: {
-        Cookie: getCookieHeader(),
+        Cookie: await getCookieHeader(),
       },
       params: {
         search: query,
@@ -69,7 +69,7 @@ export async function createNote(note: PostNote): Promise<Note> {
     note,
     {
       headers: {
-        Cookie: getCookieHeader(),
+        Cookie: await getCookieHeader(),
       },
     }
   );
@@ -82,7 +82,7 @@ export async function deleteNote(id: string): Promise<Note> {
     `/notes/${id}`,
     {
       headers: {
-        Cookie: getCookieHeader(),
+        Cookie: await getCookieHeader(),
       },
     }
   );
@@ -95,7 +95,7 @@ export async function fetchNoteById(id: string): Promise<Note> {
     `/notes/${id}`,
     {
       headers: {
-        Cookie: getCookieHeader(),
+        Cookie: await getCookieHeader(),
       },
     }
   );

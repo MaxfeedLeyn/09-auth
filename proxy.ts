@@ -1,26 +1,58 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-const privateRoutes = ["/profile"];
+const privateRoutes = [
+  "/profile",
+  "/notes",
+  "/notes/filter",
+];
+
+const authRoutes = [
+  "/sign-in",
+  "/sign-up",
+];
 
 export async function proxy(request: NextRequest) {
   const cookieStore = await cookies();
-  const accessToken = cookieStore.get("accessToken")?.value;
-    const refreshToken = cookieStore.get("refreshToken")?.value;
-    
-    const { pathname } = request.nextUrl;
-    const isPrivateRoute = privateRoutes.some((route) => pathname.startsWith(route));
 
-    if (isPrivateRoute) {
+  const accessToken = cookieStore.get("accessToken")?.value;
+  const refreshToken = cookieStore.get("refreshToken")?.value;
+
+  const { pathname } = request.nextUrl;
+
+  const isPrivateRoute = privateRoutes.some((route) =>
+    pathname.startsWith(route)
+  );
+
+  const isAuthRoute = authRoutes.some((route) =>
+    pathname.startsWith(route)
+  );
+
+  // Якщо користувач авторизований і йде на auth сторінки
+  if (isAuthRoute && accessToken) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  // Якщо приватний маршрут
+  if (isPrivateRoute) {
     if (!accessToken) {
       if (refreshToken) {
-        // тут будемо пізніше додавати silent authentication
+        // тут silent refresh
+        
+      } else {
+        return NextResponse.redirect(new URL("/sign-in", request.url));
       }
-
-      // немає жодного токена — редірект на сторінку входу
-      return NextResponse.redirect(new URL('/sign-in', request.url));
     }
   }
+
+  return NextResponse.next();
 }
 
-export const config = {};
+export const config = {
+  matcher: [
+    "/profile/:path*",
+    "/notes/:path*",
+    "/sign-in",
+    "/sign-up",
+  ],
+};

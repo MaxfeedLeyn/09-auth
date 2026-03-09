@@ -1,8 +1,11 @@
 import { nextServer } from "@/lib/api/api";
 import { User } from "@/types/user";
-import { CheckSessionRequest } from "./serverApi";
 import type { Note } from '@/types/note'
 import type { PostNote } from '@/types/note'
+
+export type CheckSessionRequest = {
+  success: boolean;
+};
 
 export type RegisterRequest = {
   email: string;
@@ -66,9 +69,9 @@ export async function fetchNoteById(id: string): Promise<Note> {
   return response.data;
 }
 
-export async function updateMe(email: string, password: string): Promise<User> {
+export async function updateMe(data: { username: string }): Promise<User> {
   const response = await nextServer.patch<User>(
-    '/users/me', { email, password },
+    '/users/me', data,
   );
   return response.data;
 }
