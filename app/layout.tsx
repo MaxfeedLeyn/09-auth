@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header/Header";
-import Footer from '@/components/Footer/Footer';
+import Footer from "@/components/Footer/Footer";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
-import { Roboto } from 'next/font/google';
+import AuthProvider from "@/components/AuthProvider/AuthProvider";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 
 const roboto = Roboto({
-  subsets: ['latin'], 
-  weight: ['400', '700'],
-  variable: '--font-roboto', 
-  display: 'swap', 
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-roboto",
+  display: "swap",
 });
-
 
 export const metadata: Metadata = {
   title: "NoteHub",
@@ -20,14 +20,15 @@ export const metadata: Metadata = {
     title: "NoteHub",
     description: "Web app design for kanban",
     url: "https://notehub.com/",
-    images: [{
-      url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
-      width: 1536,
-      height: 1024,
-      alt: "NoteHub logo"
-    },
-  ],
-  }
+    images: [
+      {
+        url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
+        width: 1536,
+        height: 1024,
+        alt: "NoteHub logo",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
@@ -39,16 +40,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${roboto.variable} antialiased`}
-      >
+      <body className={`${roboto.variable} antialiased`}>
         <TanStackProvider>
-          <Header />
-          <main>
-            {children}
-            {modal}
-          </main>
-          <Footer />
+          <AuthProvider>
+            <Header />
+            <main>
+              {children}
+              {modal}
+            </main>
+            <Footer />
+          </AuthProvider>
         </TanStackProvider>
       </body>
     </html>
