@@ -1,4 +1,4 @@
-import css from "./ProfileEditPage.module.css";
+import css from "./EditProfilePage.module.css";
 
 function ProfileEditPage() {
   return (
